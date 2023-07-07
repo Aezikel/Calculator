@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/history_menu_item"
+        android:title="@string/history"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/choose_theme_menu_item"
+        android:title="@string/choosePtheme"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/about_menu_item"
+        android:title="@string/about"
+        app:showAsAction="never"/>
+
+
+</menu>

@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".CalculatorActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar_calculator_activity"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/thirty_two_dp"
+            android:layout_height="@dimen/thirty_six_dp"
+            app:menu="@menu/calculator_menu" />
+
+        <EditText
+            android:id="@+id/user_input_edit_text_calculator_activity"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/zero_dp"
+            android:layout_weight="16.87"
+            android:background="?attr/colorSurface"
+            android:fontFamily="@font/roboto_regular"
+            android:gravity="end"
+            android:paddingHorizontal="@dimen/sixteen_dp"
+            android:paddingVertical="@dimen/twenty_two_dp"
+            android:textColor="#474747"
+            android:textSize="@dimen/sixty_eight_sp"
+            tools:text="100 × 1234" />
+
+        <TextView
+            android:id="@+id/result_textview_calculator_activity"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/zero_dp"
+            android:layout_weight="14.70"
+            android:background="?attr/colorSurface"
+            android:fontFamily="@font/roboto_regular"
+            android:gravity="end"
+            android:paddingHorizontal="@dimen/sixteen_dp"
+            android:paddingTop="@dimen/twenty_three_dp"
+            android:paddingBottom="@dimen/twenty_four_dp"
+            android:layout_marginBottom="@dimen/thirty_two_dp"
+            android:textColor="#474747"
+            android:textSize="@dimen/fifty_two_sp"
+            tools:text="123400" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="68.43"
+            android:layout_marginHorizontal="@dimen/twelve_dp"
+            android:layout_marginBottom="@dimen/sixteen_dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/row_one_calculator_keypad"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:layout_marginBottom="@dimen/four_dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/plus_minus_btn"
+                    android:layout_width="@dimen/zero_dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:text="±"
+                    style="@style/greyButtonStyle"
+                    android:background="@drawable/round_button"
+                    />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/percent_btn"
+                    android:layout_width="@dimen/zero_dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:text="%"
+                    style="@style/greyButtonStyle"
+                    android:background="@drawable/round_button"
+                    />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/cancel_btn"
+                    android:layout_width="@dimen/zero_dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:text="C"
+                    style="@style/greyButtonStyle"
+                    android:background="@drawable/round_button"
+                    />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/clear_btn"
+                    android:layout_width="@dimen/zero_dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    style="@style/greyButtonStyle"
+                    app:icon="@drawable/ic_outline_backspace_24"
+                    app:iconTint="?attr/colorOnSurface"
+                    app:iconGravity="textStart"
+                    android:background="@drawable/round_button"
+                    />
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/row_two_calculator_keypad"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:layout_marginBottom="@dimen/four_dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/pi_btn"
+                    android:layout_width="@dimen/zero_dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:text="π"
+                    style="@style/buttonStyle"
+                    android:background="@drawable/round_button"
+                    />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/raised_power_btn"
+                    android:layout_width="@dimen/zero_dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:text="^"
+                    style="@style/buttonStyle"
+                    android:background="@drawable/round_button"
+                    />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/square_root_btn"
+                    android:layout_width="@dimen/zero_dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:text="√"
+                    style="@style/buttonStyle"
+                    android:background="@drawable/round_button"
+                    />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/divide_btn"
+                    android:layout_width="@dimen/zero_dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:text="÷"
+                    style="@style/greyButtonStyle"
+                    android:background="@drawable/round_button"
+                    />
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/row_three_calculator_keypad"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:layout_marginBottom="@dimen/four_dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/seven_btn"
+                    android:layout_width="@dimen/zero_dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:text="7"
+                    style="@style/buttonStyle"
+                    android:background="@drawable/round_button"
+                    />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/eight_btn"
+                    android:layout_width="@dimen/zero_dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:text="8"
+                    style="@style/buttonStyle"
+                    android:background="@drawable/round_button"
+                    />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/nine_btn"
+                    android:layout_width="@dimen/zero_dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:text="9"
+                    style="@style/buttonStyle"
+                    android:background="@drawable/round_button"
+                    />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/multiply_btn"
+                    android:layout_width="@dimen/zero_dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:text="×"
+                    style="@style/greyButtonStyle"
+                    android:background="@drawable/round_button"
+                    />
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/row_four_calculator_keypad"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:layout_marginBottom="@dimen/four_dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/four_btn"
+                    android:layout_width="@dimen/zero_dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:text="4"
+                    style="@style/buttonStyle"
+                    android:background="@drawable/round_button"
+                    />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/five_btn"
+                    android:layout_width="@dimen/zero_dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:text="5"
+                    style="@style/buttonStyle"
+                    android:background="@drawable/round_button"
+                    />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/six_btn"
+                    android:layout_width="@dimen/zero_dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:text="6"
+                    style="@style/buttonStyle"
+                    android:background="@drawable/round_button"
+                    />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/subtract_btn"
+                    android:layout_width="@dimen/zero_dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:text="-"
+                    android:textStyle="bold"
+                    style="@style/greyButtonStyle"
+                    android:background="@drawable/round_button"
+                    />
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/row_five_calculator_keypad"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:layout_marginBottom="@dimen/four_dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/one_btn"
+                    android:layout_width="@dimen/zero_dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:text="1"
+                    style="@style/buttonStyle"
+                    android:background="@drawable/round_button"
+                    />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/two_btn"
+                    android:layout_width="@dimen/zero_dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:text="2"
+                    style="@style/buttonStyle"
+                    android:background="@drawable/round_button"
+                    />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/three_btn"
+                    android:layout_width="@dimen/zero_dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:text="3"
+                    style="@style/buttonStyle"
+                    android:background="@drawable/round_button"
+                    />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/add_btn"
+                    android:layout_width="@dimen/zero_dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/round_button"
+                    android:text="+"
+                    style="@style/greyButtonStyle"
+                    />
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/row_six_calculator_keypad"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:layout_marginBottom="@dimen/four_dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/double_zero_btn"
+                    android:layout_width="@dimen/zero_dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:text="00"
+                    style="@style/buttonStyle"
+                    android:background="@drawable/round_button"
+                    />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/zero_btn"
+                    android:layout_width="@dimen/zero_dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:text="0"
+                    style="@style/buttonStyle"
+                    android:background="@drawable/round_button"
+                    />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/decimal_point_btn"
+                    android:layout_width="@dimen/zero_dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:text="."
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    style="@style/buttonStyle"
+                    android:background="@drawable/round_button"
+                    />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/equals_btn"
+                    android:layout_width="@dimen/zero_dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:text="="
+                    style="@style/greenButtonStyle"
+                    android:background="@drawable/round_button"
+                    />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</layout>
