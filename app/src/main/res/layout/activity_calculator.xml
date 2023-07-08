@@ -4,6 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="?attr/colorSurface"
     tools:context=".CalculatorActivity">
 
     <LinearLayout
@@ -14,38 +15,39 @@
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar_calculator_activity"
             android:layout_width="match_parent"
-            android:layout_marginTop="@dimen/thirty_two_dp"
-            android:layout_height="@dimen/thirty_six_dp"
+            android:layout_height="wrap_content"
             app:menu="@menu/calculator_menu" />
 
         <EditText
+            android:windowSoftInputMode= "stateAlwaysHidden|adjustNothing"
             android:id="@+id/user_input_edit_text_calculator_activity"
             android:layout_width="match_parent"
             android:layout_height="@dimen/zero_dp"
             android:layout_weight="16.87"
-            android:background="?attr/colorSurface"
+            android:background="@null"
             android:fontFamily="@font/roboto_regular"
-            android:gravity="end"
+            android:gravity="end|center_vertical"
             android:paddingHorizontal="@dimen/sixteen_dp"
             android:paddingVertical="@dimen/twenty_two_dp"
-            android:textColor="#474747"
-            android:textSize="@dimen/sixty_eight_sp"
-            tools:text="100 × 1234" />
+            style="@style/views"
+            android:textSize="@dimen/forty_sp"
+            android:inputType="none"
+            tools:text="100 × 1234"
+            android:importantForAutofill="no" />
 
         <TextView
             android:id="@+id/result_textview_calculator_activity"
             android:layout_width="match_parent"
             android:layout_height="@dimen/zero_dp"
             android:layout_weight="14.70"
-            android:background="?attr/colorSurface"
             android:fontFamily="@font/roboto_regular"
-            android:gravity="end"
+            android:gravity="end|center_vertical"
             android:paddingHorizontal="@dimen/sixteen_dp"
             android:paddingTop="@dimen/twenty_three_dp"
             android:paddingBottom="@dimen/twenty_four_dp"
             android:layout_marginBottom="@dimen/thirty_two_dp"
-            android:textColor="#474747"
-            android:textSize="@dimen/fifty_two_sp"
+            style="@style/views"
+            android:textSize="@dimen/thirty_two_sp"
             tools:text="123400" />
 
         <LinearLayout
@@ -62,14 +64,15 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:orientation="horizontal"
-                android:layout_marginBottom="@dimen/four_dp">
+                android:layout_marginBottom="@dimen/four_dp"
+                tools:ignore="NestedWeights">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/plus_minus_btn"
                     android:layout_width="@dimen/zero_dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
-                    android:text="±"
+                    android:text="@string/negate"
                     style="@style/greyButtonStyle"
                     android:background="@drawable/round_button"
                     />
@@ -79,7 +82,7 @@
                     android:layout_width="@dimen/zero_dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
-                    android:text="%"
+                    android:text="@string/percent"
                     style="@style/greyButtonStyle"
                     android:background="@drawable/round_button"
                     />
@@ -89,7 +92,7 @@
                     android:layout_width="@dimen/zero_dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
-                    android:text="C"
+                    android:text="@string/calc_cancel"
                     style="@style/greyButtonStyle"
                     android:background="@drawable/round_button"
                     />
@@ -120,7 +123,7 @@
                     android:layout_width="@dimen/zero_dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
-                    android:text="π"
+                    android:text="@string/pi"
                     style="@style/buttonStyle"
                     android:background="@drawable/round_button"
                     />
@@ -130,7 +133,7 @@
                     android:layout_width="@dimen/zero_dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
-                    android:text="^"
+                    android:text="@string/power"
                     style="@style/buttonStyle"
                     android:background="@drawable/round_button"
                     />
@@ -140,7 +143,7 @@
                     android:layout_width="@dimen/zero_dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
-                    android:text="√"
+                    android:text="@string/sqr_root"
                     style="@style/buttonStyle"
                     android:background="@drawable/round_button"
                     />
@@ -150,7 +153,7 @@
                     android:layout_width="@dimen/zero_dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
-                    android:text="÷"
+                    android:text="@string/divide"
                     style="@style/greyButtonStyle"
                     android:background="@drawable/round_button"
                     />
@@ -169,7 +172,7 @@
                     android:layout_width="@dimen/zero_dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
-                    android:text="7"
+                    android:text="@string/seven"
                     style="@style/buttonStyle"
                     android:background="@drawable/round_button"
                     />
@@ -179,7 +182,7 @@
                     android:layout_width="@dimen/zero_dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
-                    android:text="8"
+                    android:text="@string/eight"
                     style="@style/buttonStyle"
                     android:background="@drawable/round_button"
                     />
@@ -189,7 +192,7 @@
                     android:layout_width="@dimen/zero_dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
-                    android:text="9"
+                    android:text="@string/nine"
                     style="@style/buttonStyle"
                     android:background="@drawable/round_button"
                     />
@@ -199,7 +202,7 @@
                     android:layout_width="@dimen/zero_dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
-                    android:text="×"
+                    android:text="@string/multiply"
                     style="@style/greyButtonStyle"
                     android:background="@drawable/round_button"
                     />
@@ -218,7 +221,7 @@
                     android:layout_width="@dimen/zero_dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
-                    android:text="4"
+                    android:text="@string/four"
                     style="@style/buttonStyle"
                     android:background="@drawable/round_button"
                     />
@@ -228,7 +231,7 @@
                     android:layout_width="@dimen/zero_dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
-                    android:text="5"
+                    android:text="@string/five"
                     style="@style/buttonStyle"
                     android:background="@drawable/round_button"
                     />
@@ -238,7 +241,7 @@
                     android:layout_width="@dimen/zero_dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
-                    android:text="6"
+                    android:text="@string/six"
                     style="@style/buttonStyle"
                     android:background="@drawable/round_button"
                     />
@@ -248,7 +251,7 @@
                     android:layout_width="@dimen/zero_dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
-                    android:text="-"
+                    android:text="@string/subtract"
                     android:textStyle="bold"
                     style="@style/greyButtonStyle"
                     android:background="@drawable/round_button"
@@ -268,7 +271,7 @@
                     android:layout_width="@dimen/zero_dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
-                    android:text="1"
+                    android:text="@string/one"
                     style="@style/buttonStyle"
                     android:background="@drawable/round_button"
                     />
@@ -278,7 +281,7 @@
                     android:layout_width="@dimen/zero_dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
-                    android:text="2"
+                    android:text="@string/two"
                     style="@style/buttonStyle"
                     android:background="@drawable/round_button"
                     />
@@ -288,7 +291,7 @@
                     android:layout_width="@dimen/zero_dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
-                    android:text="3"
+                    android:text="@string/three"
                     style="@style/buttonStyle"
                     android:background="@drawable/round_button"
                     />
@@ -299,7 +302,7 @@
                     android:layout_weight="1"
                     android:layout_height="match_parent"
                     android:background="@drawable/round_button"
-                    android:text="+"
+                    android:text="@string/add"
                     style="@style/greyButtonStyle"
                     />
 
@@ -317,7 +320,7 @@
                     android:layout_width="@dimen/zero_dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
-                    android:text="00"
+                    android:text="@string/double_zero"
                     style="@style/buttonStyle"
                     android:background="@drawable/round_button"
                     />
@@ -327,7 +330,7 @@
                     android:layout_width="@dimen/zero_dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
-                    android:text="0"
+                    android:text="@string/zero"
                     style="@style/buttonStyle"
                     android:background="@drawable/round_button"
                     />
@@ -337,7 +340,7 @@
                     android:layout_width="@dimen/zero_dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
-                    android:text="."
+                    android:text="@string/decimal_point"
                     android:textStyle="bold"
                     android:gravity="center"
                     style="@style/buttonStyle"
@@ -349,7 +352,7 @@
                     android:layout_width="@dimen/zero_dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
-                    android:text="="
+                    android:text="@string/equals"
                     style="@style/greenButtonStyle"
                     android:background="@drawable/round_button"
                     />
