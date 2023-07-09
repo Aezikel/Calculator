@@ -15,6 +15,9 @@ import com.example.calculator.databinding.ActivityCalculatorBinding;
 public class CalculatorActivity extends AppCompatActivity {
      ActivityCalculatorBinding binding;
      StringBuilder builder;
+     boolean canDecimal;
+
+
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -36,6 +39,17 @@ public class CalculatorActivity extends AppCompatActivity {
         final int EIGHT = 8;
         final int NINE = 9;
         final String decimal_point = ".";
+        final String ADD = "+";
+        final String SUBTRACT = "-";
+        final String MULTIPLY = "×";
+        final String DIVIDE = "÷";
+        final String PERCENT = "%";
+        final String EQUALS = "=";
+
+        canDecimal = true;
+
+
+
 
 
 
@@ -157,6 +171,7 @@ public class CalculatorActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (builder.length() != 0) {
+                    canDecimal = false;
                     if (builder.toString().contains(decimal_point)) {
                         return;
                     }
@@ -168,6 +183,47 @@ public class CalculatorActivity extends AppCompatActivity {
                 binding.userInputEditTextCalculatorActivity.setText(builder.toString());
             }
         });
+
+
+
+        /* To avoid confusion
+         * The operator button logic has been implemented below
+        **/
+
+        binding.addBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                checkOperator(ADD);
+                binding.userInputEditTextCalculatorActivity.setText(builder.toString());
+            }
+        });
+
+        binding.subtractBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                checkOperator(SUBTRACT);
+                binding.userInputEditTextCalculatorActivity.setText(builder.toString());
+            }
+        });
+
+        binding.multiplyBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                checkOperator(MULTIPLY);
+                binding.userInputEditTextCalculatorActivity.setText(builder.toString());
+
+            }
+        });
+
+        binding.divideBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                checkOperator(DIVIDE);
+                binding.userInputEditTextCalculatorActivity.setText(builder.toString());
+
+            }
+        });
+
 
 
 
@@ -189,6 +245,24 @@ public class CalculatorActivity extends AppCompatActivity {
             builder.setCharAt(0, (char) number);
         }
     }
+
+    protected void checkOperator(String operator){
+        if (!builder.toString().isEmpty()){
+            int lastIndex = builder.length() - 1;
+            if ( String.valueOf(builder.charAt(lastIndex)).equals("+")
+                    || String.valueOf(builder.charAt(lastIndex)).equals("-")
+                        || String.valueOf(builder.charAt(lastIndex)).equals("×")
+                            || String.valueOf(builder.charAt(lastIndex)).equals("÷")){
+
+                builder.setCharAt(lastIndex, operator.charAt(0));
+            }else {
+                builder.append(operator);
+            }
+        }
+
+    }
+
+
 
 
 
