@@ -171,15 +171,14 @@ public class CalculatorActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (!builder.toString().isEmpty()) {
-                    canDecimal = false;
-                    if (builder.toString().contains(decimal_point)) {
+                    if (!canDecimal){
                         return;
                     }
-                    builder.append(decimal_point);
                 } else {
                     builder.append(ZERO);
-                    builder.append(decimal_point);
                 }
+                builder.append(decimal_point);
+                canDecimal = false;
                 binding.userInputEditTextCalculatorActivity.setText(builder.toString());
             }
         });
@@ -259,6 +258,7 @@ public class CalculatorActivity extends AppCompatActivity {
                 builder.append(operator);
             }
         }
+        canDecimal = true;
 
     }
 
