@@ -67,8 +67,8 @@ public class CalculatorActivity extends AppCompatActivity {
         binding.zeroBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (builder.length() != 0) {
-                    if (builder.length() == 1 && TextUtils.equals(String.valueOf(builder.charAt(0)), String.valueOf(ZERO))) {
+                if (!builder.toString().isEmpty()) {
+                    if (builder.length() == 1 && TextUtils.equals(String.valueOf(builder.charAt(0)), "0")) {
                         return;
                     }
                 }
@@ -80,8 +80,8 @@ public class CalculatorActivity extends AppCompatActivity {
         binding.doubleZeroBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (builder.length() != 0 ){
-                   if (builder.length() == 1 && TextUtils.equals(String.valueOf(builder.charAt(0)), String.valueOf(ZERO))) {
+                if (!builder.toString().isEmpty()){
+                   if (builder.length() == 1 && TextUtils.equals(String.valueOf(builder.charAt(0)), "0")) {
                         return; }
                    builder.append(ZERO);
                }
@@ -170,7 +170,7 @@ public class CalculatorActivity extends AppCompatActivity {
         binding.decimalPointBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (builder.length() != 0) {
+                if (!builder.toString().isEmpty()) {
                     canDecimal = false;
                     if (builder.toString().contains(decimal_point)) {
                         return;
