@@ -53,7 +53,6 @@ public class CalculatorActivity extends AppCompatActivity {
         binding.zeroBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 if (builder.length() != 0) {
                     if (builder.length() == 1 && TextUtils.equals(String.valueOf(builder.charAt(0)), String.valueOf(ZERO))) {
                         return;
@@ -67,8 +66,11 @@ public class CalculatorActivity extends AppCompatActivity {
         binding.doubleZeroBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                builder.append(ZERO);
+                if (builder.length() != 0 ){
+                   if (builder.length() == 1 && TextUtils.equals(String.valueOf(builder.charAt(0)), String.valueOf(ZERO))) {
+                        return; }
+                   builder.append(ZERO);
+               }
                 builder.append(ZERO);
                 binding.userInputEditTextCalculatorActivity.setText(builder.toString());
             }
@@ -151,6 +153,22 @@ public class CalculatorActivity extends AppCompatActivity {
             }
         });
 
+        binding.decimalPointBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (builder.length() != 0) {
+                    if (builder.toString().contains(decimal_point)) {
+                        return;
+                    }
+                    builder.append(decimal_point);
+                } else {
+                    builder.append(ZERO);
+                    builder.append(decimal_point);
+                }
+                binding.userInputEditTextCalculatorActivity.setText(builder.toString());
+            }
+        });
+
 
 
 
@@ -171,6 +189,8 @@ public class CalculatorActivity extends AppCompatActivity {
             builder.setCharAt(0, (char) number);
         }
     }
+
+
 
 
 
