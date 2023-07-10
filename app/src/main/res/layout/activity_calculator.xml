@@ -30,6 +30,7 @@
             android:paddingHorizontal="@dimen/sixteen_dp"
             android:paddingVertical="@dimen/twenty_two_dp"
             style="@style/views"
+            android:textCursorDrawable="@drawable/edit_text_cursor"
             android:textSize="@dimen/forty_sp"
             android:inputType="none"
             tools:text="100 × 1234"

@@ -17,8 +17,6 @@ public class CalculatorActivity extends AppCompatActivity {
      StringBuilder builder;
      boolean canDecimal;
 
-
-
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,11 +45,6 @@ public class CalculatorActivity extends AppCompatActivity {
         final String EQUALS = "=";
 
         canDecimal = true;
-
-
-
-
-
 
         binding.userInputEditTextCalculatorActivity.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -261,12 +254,5 @@ public class CalculatorActivity extends AppCompatActivity {
         canDecimal = true;
 
     }
-
-
-
-
-
-
-
 
 }

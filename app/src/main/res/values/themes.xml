@@ -5,7 +5,7 @@
 
         <item name="colorOnPrimary">@color/colorBackground</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/colorNumeric</item>
+        <item name="colorSecondary">@color/green</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" >@color/colorBackground</item>
         <!-- Customize your theme here. -->
