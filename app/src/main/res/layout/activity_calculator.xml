@@ -18,9 +18,8 @@
             android:layout_height="wrap_content"
             app:menu="@menu/calculator_menu" />
 
-        <EditText
-            android:windowSoftInputMode= "stateAlwaysHidden|adjustNothing"
-            android:id="@+id/user_input_edit_text_calculator_activity"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/user_input_edit_text"
             android:layout_width="match_parent"
             android:layout_height="@dimen/zero_dp"
             android:layout_weight="16.87"
@@ -28,11 +27,10 @@
             android:fontFamily="@font/roboto_regular"
             android:gravity="end|center_vertical"
             android:paddingHorizontal="@dimen/sixteen_dp"
-            android:paddingVertical="@dimen/twenty_two_dp"
             style="@style/views"
+            android:cursorVisible="true"
             android:textCursorDrawable="@drawable/edit_text_cursor"
             android:textSize="@dimen/forty_sp"
-            android:inputType="none"
             tools:text="100 × 1234"
             android:importantForAutofill="no" />
 
