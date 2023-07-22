@@ -5,18 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.BaseInputConnection;
-import android.widget.Toast;
-
 import com.example.calculator.databinding.ActivityCalculatorBinding;
-
+import java.util.Arrays;
 import java.util.Objects;
 
 
@@ -26,6 +22,13 @@ public class CalculatorActivity extends AppCompatActivity {
      StringBuilder builder;
      boolean canDecimal;
      boolean canAppendZeroZero;
+     int cursorIndex;
+
+     int findForwardAdd, findForwardSubtract, findForwardMultiply, findForwardDivide;
+     int findBackwardAdd, findBackwardSubtract, findBackwardMultiply, findBackwardDivide;
+     int findForward , findBackward;
+
+
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -38,7 +41,6 @@ public class CalculatorActivity extends AppCompatActivity {
 
         builder = new StringBuilder();
         textFieldInputConnection = new BaseInputConnection(binding.userInputEditText, true); // fake delete event
-
         final int ZERO = 0;
         final int ONE = 1;
         final int TWO = 2;
@@ -59,14 +61,19 @@ public class CalculatorActivity extends AppCompatActivity {
 
         canDecimal = true;
         canAppendZeroZero = true;
+        cursorIndex = getCursorPosition();
+
+
+
+
 
         log();
+        Log.d("CursorIndex",String.valueOf(cursorIndex) );
 
         binding.userInputEditText.setShowSoftInputOnFocus(false);
         binding.userInputEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
 
             @Override
@@ -85,6 +92,53 @@ public class CalculatorActivity extends AppCompatActivity {
             }
         });
 
+        binding.userInputEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cursorIndex = getCursorPosition() - 1;
+                log();
+                Log.d("LastIndex",String.valueOf(binding.userInputEditText.length() - 1));
+
+                //  check forward for an operator
+                //  return index of that operator
+
+                findForwardAdd = Objects.requireNonNull(binding.userInputEditText.getText()).toString().indexOf(ADD  , getCursorPosition());
+                findForwardSubtract = binding.userInputEditText.getText().toString().indexOf(SUBTRACT  , getCursorPosition());
+                findForwardMultiply = binding.userInputEditText.getText().toString().indexOf(MULTIPLY  , getCursorPosition());
+                findForwardDivide = binding.userInputEditText.getText().toString().indexOf(DIVIDE  , getCursorPosition());
+
+                //  check backwards for an operator
+                //  return index of that operator
+
+                findBackwardAdd = binding.userInputEditText.getText().toString().lastIndexOf(ADD, cursorIndex);
+                findBackwardSubtract = binding.userInputEditText.getText().toString().lastIndexOf(SUBTRACT, cursorIndex);
+                findBackwardMultiply = binding.userInputEditText.getText().toString().lastIndexOf(MULTIPLY, cursorIndex);
+                findBackwardDivide = binding.userInputEditText.getText().toString().lastIndexOf(DIVIDE, cursorIndex);
+
+                // store forward and backward indexes in their respective arrays
+                int [] findBackwardsArray = {findBackwardAdd, findBackwardSubtract, findBackwardMultiply, findBackwardDivide};
+                int [] findForwardsArray = {findForwardAdd, findForwardSubtract, findForwardMultiply, findForwardDivide};
+
+                findBackward = Arrays.stream(findBackwardsArray).summaryStatistics().getMax();// get Max backward index
+                findForward = Arrays.stream(findForwardsArray).filter(i -> i >= 0).min().orElse(-1); // get MIN Positive forward index
+
+                if (findForward == -1){
+                    findForward = binding.userInputEditText.length();
+                }
+                if (findBackward == -1){
+                    findBackward = 0;
+                }
+
+                String extractedValue = binding.userInputEditText.getText().toString().substring(findBackward, findForward);
+
+                Log.d("foundForward" , String.valueOf(findForward));
+                Log.d("foundBackward" , String.valueOf(findBackward));
+                Log.d("Extracted Value", extractedValue);
+//              Log.d("CursorQuery", String.valueOf(binding.userInputEditText.getText().charAt(cursorIndex)));
+                canDecimal = !extractedValue.contains(".");
+
+            }
+        });
 
 
         binding.zeroBtn.setOnClickListener(new View.OnClickListener() {
@@ -111,7 +165,6 @@ public class CalculatorActivity extends AppCompatActivity {
                 insertOrAppend(String.valueOf(ZERO));
             }
         });
-
         binding.doubleZeroBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -314,6 +367,9 @@ public class CalculatorActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (binding.userInputEditText.isFocused()){
+                    if (TextUtils.equals(String.valueOf(Objects.requireNonNull(binding.userInputEditText.getText()).charAt(getCursorPosition() - 1)) , decimal_point)){
+                        canDecimal = true;
+                    }
 //                  builder.deleteCharAt(builder.length() - 1);
                     textFieldInputConnection.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
                 }
@@ -336,7 +392,7 @@ public class CalculatorActivity extends AppCompatActivity {
         if (isCursorPositionEqualsLength() && checkOperator()){
             //textFieldInputConnection.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
             Objects.requireNonNull(binding.userInputEditText.getText())
-                    .delete(binding.userInputEditText.getText().length() - 1, binding.userInputEditText.getText().length());
+                    .delete(binding.userInputEditText.length() - 1, binding.userInputEditText.length());
         }
         insertOrAppend(operator);
         canDecimal = true;
@@ -345,10 +401,10 @@ public class CalculatorActivity extends AppCompatActivity {
     protected boolean checkOperator() {
         int lastIndex = binding.userInputEditText.length() - 1;
         if (!TextUtils.isEmpty(binding.userInputEditText.getText())) {
-            return binding.userInputEditText.getText().toString().charAt(lastIndex) == '+'
-                    || binding.userInputEditText.getText().toString().charAt(lastIndex) == '-'
-                    || binding.userInputEditText.getText().toString().charAt(lastIndex) == '÷'
-                    || binding.userInputEditText.getText().toString().charAt(lastIndex) == '×';
+            return binding.userInputEditText.getText().charAt(lastIndex) == '+'
+                    || binding.userInputEditText.getText().charAt(lastIndex) == '-'
+                    || binding.userInputEditText.getText().charAt(lastIndex) == '÷'
+                    || binding.userInputEditText.getText().charAt(lastIndex) == '×';
         }
         return false;
     }
@@ -381,5 +437,4 @@ public class CalculatorActivity extends AppCompatActivity {
             binding.userInputEditText.append(input);
         }
     }
-
 }
