@@ -26,4 +26,10 @@
     <string name="calc_cancel">C</string>
     <string name="percent">%</string>
     <string name="negate">±</string>
+
+    <string name="Choose_theme">Choose theme</string>
+    <string name="Cancel">Cancel</string>
+    <string name="Ok">Ok</string>
+
+
 </resources>

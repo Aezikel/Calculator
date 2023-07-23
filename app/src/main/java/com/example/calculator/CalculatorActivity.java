@@ -1,17 +1,22 @@
 package com.example.calculator;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.BaseInputConnection;
 import com.example.calculator.databinding.ActivityCalculatorBinding;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -27,6 +32,7 @@ public class CalculatorActivity extends AppCompatActivity {
      int findForwardAdd, findForwardSubtract, findForwardMultiply, findForwardDivide;
      int findBackwardAdd, findBackwardSubtract, findBackwardMultiply, findBackwardDivide;
      int findForward , findBackward;
+
 
 
 
@@ -64,6 +70,35 @@ public class CalculatorActivity extends AppCompatActivity {
         cursorIndex = getCursorPosition();
 
 
+        binding.toolbarCalculatorActivity.getMenu().findItem(R.id.choose_theme_menu_item).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(@NonNull MenuItem menuItem) {
+                MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(CalculatorActivity.this)
+                        .setTitle(getString(R.string.choosePtheme))
+                        .setNegativeButton(getString(R.string.Cancel), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                            }
+                        })
+                        .setPositiveButton(getString(R.string.Ok), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                            }
+                        })
+                        .setSingleChoiceItems(getResources().getStringArray(R.array.theme_dialog_array), ONE, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                            }
+                        });
+
+                    materialAlertDialogBuilder.create().show();
+
+                return false;
+            }
+        });
 
 
 
