@@ -34,9 +34,6 @@ public class CalculatorActivity extends AppCompatActivity {
      int findForward , findBackward;
 
 
-
-
-
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,19 +75,16 @@ public class CalculatorActivity extends AppCompatActivity {
                         .setNegativeButton(getString(R.string.Cancel), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-
                             }
                         })
                         .setPositiveButton(getString(R.string.Ok), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-
                             }
                         })
                         .setSingleChoiceItems(getResources().getStringArray(R.array.theme_dialog_array), ONE, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-
                             }
                         });
 
@@ -99,8 +93,6 @@ public class CalculatorActivity extends AppCompatActivity {
                 return false;
             }
         });
-
-
 
         log();
         Log.d("CursorIndex",String.valueOf(cursorIndex) );
@@ -402,6 +394,9 @@ public class CalculatorActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (binding.userInputEditText.isFocused()){
+                    if (getCursorPosition() == 0){
+                        return;
+                    }
                     if (TextUtils.equals(String.valueOf(Objects.requireNonNull(binding.userInputEditText.getText()).charAt(getCursorPosition() - 1)) , decimal_point)){
                         canDecimal = true;
                     }
