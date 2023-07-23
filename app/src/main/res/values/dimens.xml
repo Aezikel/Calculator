@@ -22,4 +22,7 @@
     <dimen name="twenty_four_sp">24sp</dimen>
     <dimen name="thirty_six_sp">36sp</dimen>
     <dimen name="zero_dp">0dp</dimen>
+    <dimen name="forty_dp">40dp</dimen>
+    <dimen name="forty_sp">40sp</dimen>
+    <dimen name="thirty_two_sp">32sp</dimen>
 </resources>

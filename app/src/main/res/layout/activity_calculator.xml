@@ -4,106 +4,107 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="?attr/colorSurface"
     tools:context=".CalculatorActivity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <LinearLayout android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar_calculator_activity"
             android:layout_width="match_parent"
-            android:layout_marginTop="@dimen/thirty_two_dp"
-            android:layout_height="@dimen/thirty_six_dp"
+            android:layout_height="wrap_content"
             app:menu="@menu/calculator_menu" />
 
-        <EditText
-            android:id="@+id/user_input_edit_text_calculator_activity"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/user_input_edit_text"
+            style="@style/views"
             android:layout_width="match_parent"
             android:layout_height="@dimen/zero_dp"
             android:layout_weight="16.87"
-            android:background="?attr/colorSurface"
+            android:background="@null"
+            android:cursorVisible="true"
             android:fontFamily="@font/roboto_regular"
-            android:gravity="end"
+            android:gravity="end|center_vertical"
+            android:importantForAutofill="no"
             android:paddingHorizontal="@dimen/sixteen_dp"
-            android:paddingVertical="@dimen/twenty_two_dp"
-            android:textColor="#474747"
-            android:textSize="@dimen/sixty_eight_sp"
+            android:textCursorDrawable="@drawable/edit_text_cursor"
+            android:textSize="@dimen/forty_sp"
             tools:text="100 × 1234" />
 
         <TextView
             android:id="@+id/result_textview_calculator_activity"
+            style="@style/views"
             android:layout_width="match_parent"
             android:layout_height="@dimen/zero_dp"
+            android:layout_marginBottom="@dimen/thirty_two_dp"
             android:layout_weight="14.70"
-            android:background="?attr/colorSurface"
             android:fontFamily="@font/roboto_regular"
-            android:gravity="end"
+            android:gravity="end|center_vertical"
             android:paddingHorizontal="@dimen/sixteen_dp"
             android:paddingTop="@dimen/twenty_three_dp"
             android:paddingBottom="@dimen/twenty_four_dp"
-            android:layout_marginBottom="@dimen/thirty_two_dp"
-            android:textColor="#474747"
-            android:textSize="@dimen/fifty_two_sp"
+            android:textSize="@dimen/thirty_two_sp"
             tools:text="123400" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="68.43"
             android:layout_marginHorizontal="@dimen/twelve_dp"
             android:layout_marginBottom="@dimen/sixteen_dp"
+            android:layout_weight="68.43"
             android:orientation="vertical">
 
             <LinearLayout
                 android:id="@+id/row_one_calculator_keypad"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:layout_marginBottom="@dimen/four_dp"
                 android:layout_weight="1"
                 android:orientation="horizontal"
-                android:layout_marginBottom="@dimen/four_dp">
+                tools:ignore="NestedWeights">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/plus_minus_btn"
-                    android:layout_width="@dimen/zero_dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:text="±"
                     style="@style/greyButtonStyle"
+                    android:layout_width="@dimen/zero_dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:background="@drawable/round_button"
+                    android:text="@string/negate"
                     />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/percent_btn"
-                    android:layout_width="@dimen/zero_dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:text="%"
                     style="@style/greyButtonStyle"
+                    android:layout_width="@dimen/zero_dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:background="@drawable/round_button"
+                    android:text="@string/percent"
                     />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/cancel_btn"
-                    android:layout_width="@dimen/zero_dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:text="C"
                     style="@style/greyButtonStyle"
+                    android:layout_width="@dimen/zero_dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:background="@drawable/round_button"
+                    android:text="@string/calc_cancel"
                     />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/clear_btn"
-                    android:layout_width="@dimen/zero_dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
                     style="@style/greyButtonStyle"
-                    app:icon="@drawable/ic_outline_backspace_24"
-                    app:iconTint="?attr/colorOnSurface"
-                    app:iconGravity="textStart"
+                    android:layout_width="@dimen/zero_dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:background="@drawable/round_button"
+                    app:icon="@drawable/ic_outline_backspace_24"
+                    app:iconGravity="textStart"
+                    app:iconTint="?attr/colorOnSurface"
                     />
 
             </LinearLayout>
@@ -111,48 +112,48 @@
                 android:id="@+id/row_two_calculator_keypad"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:layout_marginBottom="@dimen/four_dp"
                 android:layout_weight="1"
-                android:orientation="horizontal"
-                android:layout_marginBottom="@dimen/four_dp">
+                android:orientation="horizontal">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/pi_btn"
-                    android:layout_width="@dimen/zero_dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:text="π"
                     style="@style/buttonStyle"
+                    android:layout_width="@dimen/zero_dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:background="@drawable/round_button"
+                    android:text="@string/pi"
                     />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/raised_power_btn"
-                    android:layout_width="@dimen/zero_dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:text="^"
                     style="@style/buttonStyle"
+                    android:layout_width="@dimen/zero_dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:background="@drawable/round_button"
+                    android:text="@string/power"
                     />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/square_root_btn"
-                    android:layout_width="@dimen/zero_dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:text="√"
                     style="@style/buttonStyle"
+                    android:layout_width="@dimen/zero_dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:background="@drawable/round_button"
+                    android:text="@string/sqr_root"
                     />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/divide_btn"
-                    android:layout_width="@dimen/zero_dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:text="÷"
                     style="@style/greyButtonStyle"
+                    android:layout_width="@dimen/zero_dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:background="@drawable/round_button"
+                    android:text="@string/divide"
                     />
 
             </LinearLayout>
@@ -160,48 +161,48 @@
                 android:id="@+id/row_three_calculator_keypad"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:layout_marginBottom="@dimen/four_dp"
                 android:layout_weight="1"
-                android:orientation="horizontal"
-                android:layout_marginBottom="@dimen/four_dp">
+                android:orientation="horizontal">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/seven_btn"
-                    android:layout_width="@dimen/zero_dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:text="7"
                     style="@style/buttonStyle"
+                    android:layout_width="@dimen/zero_dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:background="@drawable/round_button"
+                    android:text="@string/seven"
                     />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/eight_btn"
-                    android:layout_width="@dimen/zero_dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:text="8"
                     style="@style/buttonStyle"
+                    android:layout_width="@dimen/zero_dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:background="@drawable/round_button"
+                    android:text="@string/eight"
                     />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/nine_btn"
-                    android:layout_width="@dimen/zero_dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:text="9"
                     style="@style/buttonStyle"
+                    android:layout_width="@dimen/zero_dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:background="@drawable/round_button"
+                    android:text="@string/nine"
                     />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/multiply_btn"
-                    android:layout_width="@dimen/zero_dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:text="×"
                     style="@style/greyButtonStyle"
+                    android:layout_width="@dimen/zero_dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:background="@drawable/round_button"
+                    android:text="@string/multiply"
                     />
 
             </LinearLayout>
@@ -209,49 +210,49 @@
                 android:id="@+id/row_four_calculator_keypad"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:layout_marginBottom="@dimen/four_dp"
                 android:layout_weight="1"
-                android:orientation="horizontal"
-                android:layout_marginBottom="@dimen/four_dp">
+                android:orientation="horizontal">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/four_btn"
-                    android:layout_width="@dimen/zero_dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:text="4"
                     style="@style/buttonStyle"
+                    android:layout_width="@dimen/zero_dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:background="@drawable/round_button"
+                    android:text="@string/four"
                     />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/five_btn"
-                    android:layout_width="@dimen/zero_dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:text="5"
                     style="@style/buttonStyle"
+                    android:layout_width="@dimen/zero_dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:background="@drawable/round_button"
+                    android:text="@string/five"
                     />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/six_btn"
-                    android:layout_width="@dimen/zero_dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:text="6"
                     style="@style/buttonStyle"
+                    android:layout_width="@dimen/zero_dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:background="@drawable/round_button"
+                    android:text="@string/six"
                     />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/subtract_btn"
-                    android:layout_width="@dimen/zero_dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:text="-"
-                    android:textStyle="bold"
                     style="@style/greyButtonStyle"
+                    android:layout_width="@dimen/zero_dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:background="@drawable/round_button"
+                    android:text="@string/subtract"
+                    android:textStyle="bold"
                     />
 
             </LinearLayout>
@@ -259,48 +260,48 @@
                 android:id="@+id/row_five_calculator_keypad"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:layout_marginBottom="@dimen/four_dp"
                 android:layout_weight="1"
-                android:orientation="horizontal"
-                android:layout_marginBottom="@dimen/four_dp">
+                android:orientation="horizontal">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/one_btn"
-                    android:layout_width="@dimen/zero_dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:text="1"
                     style="@style/buttonStyle"
+                    android:layout_width="@dimen/zero_dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:background="@drawable/round_button"
+                    android:text="@string/one"
                     />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/two_btn"
-                    android:layout_width="@dimen/zero_dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:text="2"
                     style="@style/buttonStyle"
+                    android:layout_width="@dimen/zero_dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:background="@drawable/round_button"
+                    android:text="@string/two"
                     />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/three_btn"
-                    android:layout_width="@dimen/zero_dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:text="3"
                     style="@style/buttonStyle"
+                    android:layout_width="@dimen/zero_dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:background="@drawable/round_button"
+                    android:text="@string/three"
                     />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/add_btn"
-                    android:layout_width="@dimen/zero_dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/round_button"
-                    android:text="+"
                     style="@style/greyButtonStyle"
+                    android:layout_width="@dimen/zero_dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/round_button"
+                    android:text="@string/add"
                     />
 
             </LinearLayout>
@@ -308,50 +309,50 @@
                 android:id="@+id/row_six_calculator_keypad"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:layout_marginBottom="@dimen/four_dp"
                 android:layout_weight="1"
-                android:orientation="horizontal"
-                android:layout_marginBottom="@dimen/four_dp">
+                android:orientation="horizontal">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/double_zero_btn"
-                    android:layout_width="@dimen/zero_dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:text="00"
                     style="@style/buttonStyle"
+                    android:layout_width="@dimen/zero_dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:background="@drawable/round_button"
+                    android:text="@string/double_zero"
                     />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/zero_btn"
-                    android:layout_width="@dimen/zero_dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:text="0"
                     style="@style/buttonStyle"
+                    android:layout_width="@dimen/zero_dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:background="@drawable/round_button"
+                    android:text="@string/zero"
                     />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/decimal_point_btn"
-                    android:layout_width="@dimen/zero_dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:text="."
-                    android:textStyle="bold"
-                    android:gravity="center"
                     style="@style/buttonStyle"
+                    android:layout_width="@dimen/zero_dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:background="@drawable/round_button"
+                    android:gravity="center"
+                    android:text="@string/decimal_point"
+                    android:textStyle="bold"
                     />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/equals_btn"
-                    android:layout_width="@dimen/zero_dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:text="="
                     style="@style/greenButtonStyle"
+                    android:layout_width="@dimen/zero_dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:background="@drawable/round_button"
+                    android:text="@string/equals"
                     />
 
             </LinearLayout>
