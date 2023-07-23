@@ -73,25 +73,6 @@ public class CalculatorActivity extends AppCompatActivity {
         binding.toolbarCalculatorActivity.getMenu().findItem(R.id.choose_theme_menu_item).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(@NonNull MenuItem menuItem) {
-//                val singleItems = arrayOf("Item 1", "Item 2", "Item 3")
-//                val checkedItem = 1
-//
-//                MaterialAlertDialogBuilder(context)
-//                        .setTitle(resources.getString(R.string.title))
-//                        .setNeutralButton(resources.getString(R.string.cancel)) { dialog, which ->
-//                    // Respond to neutral button press
-//                }
-//        .setPositiveButton(resources.getString(R.string.ok)) { dialog, which ->
-//                    // Respond to positive button press
-//                }
-//                // Single-choice items (initialized with checked item)
-//        .setSingleChoiceItems(singleItems, checkedItem) { dialog, which ->
-//                    // Respond to item chosen
-//                }
-//        .show()
-//
-
-
                 MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(CalculatorActivity.this)
                         .setTitle(getString(R.string.choosePtheme))
                         .setNegativeButton(getString(R.string.Cancel), new DialogInterface.OnClickListener() {
@@ -114,8 +95,6 @@ public class CalculatorActivity extends AppCompatActivity {
                         });
 
                     materialAlertDialogBuilder.create().show();
-
-
 
                 return false;
             }
