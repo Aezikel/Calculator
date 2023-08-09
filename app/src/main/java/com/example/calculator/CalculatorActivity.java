@@ -17,6 +17,8 @@ import android.view.inputmethod.BaseInputConnection;
 import com.example.calculator.databinding.ActivityCalculatorBinding;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import org.mariuszgromada.math.mxparser.Expression;
+
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -32,9 +34,6 @@ public class CalculatorActivity extends AppCompatActivity {
      int findForwardAdd, findForwardSubtract, findForwardMultiply, findForwardDivide;
      int findBackwardAdd, findBackwardSubtract, findBackwardMultiply, findBackwardDivide;
      int findForward , findBackward;
-
-
-
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -67,6 +66,8 @@ public class CalculatorActivity extends AppCompatActivity {
 
         canDecimal = true;
         canAppendZeroZero = true;
+
+
         cursorIndex = getCursorPosition();
 
 
@@ -78,19 +79,16 @@ public class CalculatorActivity extends AppCompatActivity {
                         .setNegativeButton(getString(R.string.Cancel), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-
                             }
                         })
                         .setPositiveButton(getString(R.string.Ok), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-
                             }
                         })
                         .setSingleChoiceItems(getResources().getStringArray(R.array.theme_dialog_array), ONE, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-
                             }
                         });
 
@@ -99,8 +97,6 @@ public class CalculatorActivity extends AppCompatActivity {
                 return false;
             }
         });
-
-
 
         log();
         Log.d("CursorIndex",String.valueOf(cursorIndex) );
@@ -113,6 +109,9 @@ public class CalculatorActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (binding.userInputEditText.length() == 0 ){
+                    binding.resultTextviewCalculatorActivity.setText("");
+                }
 
             }
 
@@ -124,13 +123,27 @@ public class CalculatorActivity extends AppCompatActivity {
                 }
                 log();
 
+
+                Expression esp = new Expression(binding.userInputEditText.getText().toString());
+                String result;
+                if (esp.checkSyntax()){
+                    result = String.valueOf(esp.calculate());
+                    if (result.endsWith(".0")){
+                        result = result.replace(".0", "");
+                        binding.resultTextviewCalculatorActivity.setText(result);
+                    }
+                }
+//                else {
+//                    result = "Expression Error";
+//                }
+
             }
         });
 
         binding.userInputEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                cursorIndex = getCursorPosition() - 1;
+                setCursorIndex();
                 log();
                 Log.d("LastIndex",String.valueOf(binding.userInputEditText.length() - 1));
 
@@ -171,7 +184,6 @@ public class CalculatorActivity extends AppCompatActivity {
                 Log.d("Extracted Value", extractedValue);
 //              Log.d("CursorQuery", String.valueOf(binding.userInputEditText.getText().charAt(cursorIndex)));
                 canDecimal = !extractedValue.contains(".");
-
             }
         });
 
@@ -328,10 +340,12 @@ public class CalculatorActivity extends AppCompatActivity {
                 if (!TextUtils.isEmpty(binding.userInputEditText.getText())) {
                     if (!canDecimal){
                         return;
-                    }else if(checkOperator()){
+                    }else
+                        if(checkOperator() || getCursorPosition() == 0){
                         builder.append(ZERO);// ignore
                         insertOrAppend(String.valueOf(ZERO));
                     }
+
                 }
                 else {
                     builder.append(ZERO); // ignore
@@ -362,6 +376,18 @@ public class CalculatorActivity extends AppCompatActivity {
         binding.subtractBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (!TextUtils.isEmpty(binding.userInputEditText.getText()) && indexZeroIsMinus()){
+                    return;
+                }
+
+                if(checkForOperatorExceptSubtract()){
+                    insertOrAppend(SUBTRACT);
+                    return;
+                }
+
+                // if charAt(cursor index ) = -
+                // return else append
+
                 replaceOperator(SUBTRACT);
             }
         });
@@ -392,8 +418,9 @@ public class CalculatorActivity extends AppCompatActivity {
                 if (TextUtils.isEmpty(binding.userInputEditText.getText())){
                     return;
                 }
-                builder.setLength(0);
+//                builder.setLength(0);
                 binding.userInputEditText.getText().clear();
+                binding.resultTextviewCalculatorActivity.setText("");
                 canDecimal = true;
             }
         });
@@ -402,11 +429,15 @@ public class CalculatorActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (binding.userInputEditText.isFocused()){
+                    if (getCursorPosition() == 0){
+                        return;
+                    }
                     if (TextUtils.equals(String.valueOf(Objects.requireNonNull(binding.userInputEditText.getText()).charAt(getCursorPosition() - 1)) , decimal_point)){
                         canDecimal = true;
                     }
 //                  builder.deleteCharAt(builder.length() - 1);
                     textFieldInputConnection.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
+
                 }
             }
         });
@@ -424,29 +455,41 @@ public class CalculatorActivity extends AppCompatActivity {
 
     protected void replaceOperator(String operator){
         Log.d("Operator found", String.valueOf(checkOperator()));
-        if (isCursorPositionEqualsLength() && checkOperator()){
+        if (checkOperator()){
             //textFieldInputConnection.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
-            Objects.requireNonNull(binding.userInputEditText.getText())
-                    .delete(binding.userInputEditText.length() - 1, binding.userInputEditText.length());
+            Objects.requireNonNull(binding.userInputEditText.getText()).delete(cursorIndex, getCursorPosition());
         }
         insertOrAppend(operator);
         canDecimal = true;
     }
 
     protected boolean checkOperator() {
-        int lastIndex = binding.userInputEditText.length() - 1;
+        // check if the cursor index is an operator
+        setCursorIndex();
         if (!TextUtils.isEmpty(binding.userInputEditText.getText())) {
-            return binding.userInputEditText.getText().charAt(lastIndex) == '+'
-                    || binding.userInputEditText.getText().charAt(lastIndex) == '-'
-                    || binding.userInputEditText.getText().charAt(lastIndex) == '÷'
-                    || binding.userInputEditText.getText().charAt(lastIndex) == '×';
+            return binding.userInputEditText.getText().charAt(cursorIndex) == '+'
+                    || binding.userInputEditText.getText().charAt(cursorIndex) == '-'
+                    || binding.userInputEditText.getText().charAt(cursorIndex) == '÷'
+                    || binding.userInputEditText.getText().charAt(cursorIndex) == '×';
         }
         return false;
     }
 
+    protected boolean checkForOperatorExceptSubtract(){
+        setCursorIndex();
+        if (!TextUtils.isEmpty(binding.userInputEditText.getText())) {
+            return binding.userInputEditText.getText().charAt(cursorIndex) == '+'
+                    || binding.userInputEditText.getText().charAt(cursorIndex) == '÷'
+                    || binding.userInputEditText.getText().charAt(cursorIndex) == '×';
+        }
+        return false;
+
+    }
+
     protected boolean checkForEmptyOrSubtract(){
         return TextUtils.isEmpty(binding.userInputEditText.getText())
-                || (binding.userInputEditText.length() == 1 && binding.userInputEditText.getText().toString().charAt(0) == '-');
+                || (indexZeroIsMinus())
+                || getCursorPosition() == 0;
     }
 
     protected int getCursorPosition(){
@@ -457,19 +500,31 @@ public class CalculatorActivity extends AppCompatActivity {
     protected boolean isCursorPositionEqualsLength(){
         return getCursorPosition() == binding.userInputEditText.length();
     }
+
+    protected boolean indexZeroIsMinus(){
+        return (getCursorPosition() == 0 || getCursorPosition() == 1) && Objects.requireNonNull(binding.userInputEditText.getText()).charAt(0) == '-';
+    }
+
     protected void log(){
         Log.d("cursorAt", String.valueOf(getCursorPosition()));
         Log.d("length", String.valueOf(binding.userInputEditText.length()));
     }
 
     protected void insertOrAppend(String input){
-
         if (!TextUtils.isEmpty(binding.userInputEditText.getText())
                 && !isCursorPositionEqualsLength()){
             binding.userInputEditText.getText().insert(getCursorPosition(), input);
         }
+
         else {
             binding.userInputEditText.append(input);
         }
+    }
+
+    protected void setCursorIndex(){
+        if (getCursorPosition() > 0 ){
+            cursorIndex = getCursorPosition() - 1;
+        } else
+            cursorIndex = 0;
     }
 }
