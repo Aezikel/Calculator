@@ -35,6 +35,9 @@ public class CalculatorActivity extends AppCompatActivity {
      int findBackwardAdd, findBackwardSubtract, findBackwardMultiply, findBackwardDivide;
      int findForward , findBackward;
 
+     StringBuilder utilitySBuilder;
+     String result;
+
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -45,6 +48,7 @@ public class CalculatorActivity extends AppCompatActivity {
         setContentView(view);
 
         builder = new StringBuilder();
+        utilitySBuilder = new StringBuilder();
         textFieldInputConnection = new BaseInputConnection(binding.userInputEditText, true); // fake delete event
         final int ZERO = 0;
         final int ONE = 1;
@@ -124,19 +128,23 @@ public class CalculatorActivity extends AppCompatActivity {
                 log();
 
 
-                Expression esp = new Expression(binding.userInputEditText.getText().toString());
-                String result;
-                if (esp.checkSyntax()){
-                    result = String.valueOf(esp.calculate());
-                    if (result.endsWith(".0")){
-                        result = result.replace(".0", "");
-                        binding.resultTextviewCalculatorActivity.setText(result);
-                    }
-                }
-//                else {
-//                    result = "Expression Error";
-//                }
+                if (!binding.userInputEditText.getText().toString().isEmpty()){
 
+//                    Expression esp = new Expression(binding.userInputEditText.getText().toString());
+
+                    Expression esp = new Expression(checkExpression(binding.userInputEditText.getText().toString()));
+                        if (esp.checkSyntax()){
+                            result = String.valueOf(esp.calculate());
+
+                            if (result.endsWith(".0")){
+                                result = result.replace(".0", "");
+                            }
+                        }
+                        else {
+                            result = "Expression Error";
+                        }
+                        binding.resultTextviewCalculatorActivity.setText(result);
+                }
             }
         });
 
@@ -201,7 +209,6 @@ public class CalculatorActivity extends AppCompatActivity {
                         insertOrAppend(String.valueOf(ZERO));
                         canAppendZeroZero = false;
                         return;
-
                     }
 
                     if (!canAppendZeroZero){
@@ -526,5 +533,21 @@ public class CalculatorActivity extends AppCompatActivity {
             cursorIndex = getCursorPosition() - 1;
         } else
             cursorIndex = 0;
+    }
+
+    protected String checkExpression(String expression){
+        utilitySBuilder.setLength(0); // clear utility String builder
+        utilitySBuilder.append(expression);
+
+
+        if (expression.endsWith("×-") || expression.endsWith("÷-")){
+            utilitySBuilder.delete(utilitySBuilder.length() - 2 , utilitySBuilder.length() - 1);
+        }
+
+        if (expression.endsWith("×") || expression.endsWith("÷") || expression.endsWith(".")){
+            utilitySBuilder.deleteCharAt(utilitySBuilder.length() - 1);
+        }
+
+        return  utilitySBuilder.toString();
     }
 }
