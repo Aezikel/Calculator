@@ -17,6 +17,8 @@ import android.view.inputmethod.BaseInputConnection;
 import com.example.calculator.databinding.ActivityCalculatorBinding;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import org.mariuszgromada.math.mxparser.Expression;
+
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -107,6 +109,9 @@ public class CalculatorActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (binding.userInputEditText.length() == 0 ){
+                    binding.resultTextviewCalculatorActivity.setText("");
+                }
 
             }
 
@@ -117,6 +122,20 @@ public class CalculatorActivity extends AppCompatActivity {
                     Log.d("FocusRequested", "true");
                 }
                 log();
+
+
+                Expression esp = new Expression(binding.userInputEditText.getText().toString());
+                String result;
+                if (esp.checkSyntax()){
+                    result = String.valueOf(esp.calculate());
+                    if (result.endsWith(".0")){
+                        result = result.replace(".0", "");
+                        binding.resultTextviewCalculatorActivity.setText(result);
+                    }
+                }
+//                else {
+//                    result = "Expression Error";
+//                }
 
             }
         });
@@ -399,8 +418,9 @@ public class CalculatorActivity extends AppCompatActivity {
                 if (TextUtils.isEmpty(binding.userInputEditText.getText())){
                     return;
                 }
-                builder.setLength(0);
+//                builder.setLength(0);
                 binding.userInputEditText.getText().clear();
+                binding.resultTextviewCalculatorActivity.setText("");
                 canDecimal = true;
             }
         });
@@ -417,6 +437,7 @@ public class CalculatorActivity extends AppCompatActivity {
                     }
 //                  builder.deleteCharAt(builder.length() - 1);
                     textFieldInputConnection.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
+
                 }
             }
         });
