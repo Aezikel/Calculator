@@ -562,7 +562,7 @@ public class CalculatorActivity extends AppCompatActivity {
     }
 
     protected void evaluateAndSetExpression(String expression){
-        if (!expression.isEmpty()){
+        if (!expression.isEmpty() && !indexZeroIsMinus()){
 
             Expression esp = new Expression(checkExpression(expression));
             if (esp.checkSyntax()){
