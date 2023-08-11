@@ -348,7 +348,6 @@ public class CalculatorActivity extends AppCompatActivity {
                 }
                 operatorModifyAfterEqualityClicked();
                 replaceOperator(ADD);
-//              binding.userInputEditText.setText(builder.toString());
             }
         });
 
@@ -387,6 +386,17 @@ public class CalculatorActivity extends AppCompatActivity {
                 }
                 operatorModifyAfterEqualityClicked();
                 replaceOperator(DIVIDE);
+            }
+        });
+
+        binding.percentBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (checkForEmptyOrSubtract()){
+                    return;
+                }
+                operatorModifyAfterEqualityClicked();
+                replaceOperator(PERCENT);
             }
         });
 
@@ -468,7 +478,8 @@ public class CalculatorActivity extends AppCompatActivity {
             return binding.userInputEditText.getText().charAt(cursorIndex) == '+'
                     || binding.userInputEditText.getText().charAt(cursorIndex) == '-'
                     || binding.userInputEditText.getText().charAt(cursorIndex) == '÷'
-                    || binding.userInputEditText.getText().charAt(cursorIndex) == '×';
+                    || binding.userInputEditText.getText().charAt(cursorIndex) == '×'
+                    || binding.userInputEditText.getText().charAt(cursorIndex) == '%';
         }
         return false;
     }
@@ -478,7 +489,8 @@ public class CalculatorActivity extends AppCompatActivity {
         if (!TextUtils.isEmpty(binding.userInputEditText.getText())) {
             return binding.userInputEditText.getText().charAt(cursorIndex) == '+'
                     || binding.userInputEditText.getText().charAt(cursorIndex) == '÷'
-                    || binding.userInputEditText.getText().charAt(cursorIndex) == '×';
+                    || binding.userInputEditText.getText().charAt(cursorIndex) == '×'
+                    || binding.userInputEditText.getText().charAt(cursorIndex) == '%';
         }
         return false;
 
