@@ -26,9 +26,9 @@ import java.util.Objects;
 public class CalculatorActivity extends AppCompatActivity {
      ActivityCalculatorBinding binding;
      BaseInputConnection textFieldInputConnection;
-     StringBuilder builder;
      boolean canDecimal;
      boolean canAppendZeroZero;
+     boolean clickedEqualitySign;
      int cursorIndex;
 
      int findForwardAdd, findForwardSubtract, findForwardMultiply, findForwardDivide;
@@ -37,6 +37,7 @@ public class CalculatorActivity extends AppCompatActivity {
 
      StringBuilder utilitySBuilder;
      String result;
+     String ErrorMessage;
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -47,7 +48,6 @@ public class CalculatorActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        builder = new StringBuilder();
         utilitySBuilder = new StringBuilder();
         textFieldInputConnection = new BaseInputConnection(binding.userInputEditText, true); // fake delete event
         final int ZERO = 0;
@@ -68,12 +68,13 @@ public class CalculatorActivity extends AppCompatActivity {
         final String PERCENT = "%";
         final String EQUALS = "=";
 
+        ErrorMessage = "Expression error";
+
         canDecimal = true;
         canAppendZeroZero = true;
-
+        clickedEqualitySign = false;
 
         cursorIndex = getCursorPosition();
-
 
         binding.toolbarCalculatorActivity.getMenu().findItem(R.id.choose_theme_menu_item).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
@@ -116,7 +117,6 @@ public class CalculatorActivity extends AppCompatActivity {
                 if (binding.userInputEditText.length() == 0 ){
                     binding.resultTextviewCalculatorActivity.setText("");
                 }
-
             }
 
             @Override
@@ -126,25 +126,7 @@ public class CalculatorActivity extends AppCompatActivity {
                     Log.d("FocusRequested", "true");
                 }
                 log();
-
-
-                if (!binding.userInputEditText.getText().toString().isEmpty()){
-
-//                    Expression esp = new Expression(binding.userInputEditText.getText().toString());
-
-                    Expression esp = new Expression(checkExpression(binding.userInputEditText.getText().toString()));
-                        if (esp.checkSyntax()){
-                            result = String.valueOf(esp.calculate());
-
-                            if (result.endsWith(".0")){
-                                result = result.replace(".0", "");
-                            }
-                        }
-                        else {
-                            result = "Expression Error";
-                        }
-                        binding.resultTextviewCalculatorActivity.setText(result);
-                }
+                evaluateAndSetExpression(binding.userInputEditText.getText().toString());
             }
         });
 
@@ -157,7 +139,6 @@ public class CalculatorActivity extends AppCompatActivity {
 
                 //  check forward for an operator
                 //  return index of that operator
-
                 findForwardAdd = Objects.requireNonNull(binding.userInputEditText.getText()).toString().indexOf(ADD  , getCursorPosition());
                 findForwardSubtract = binding.userInputEditText.getText().toString().indexOf(SUBTRACT  , getCursorPosition());
                 findForwardMultiply = binding.userInputEditText.getText().toString().indexOf(MULTIPLY  , getCursorPosition());
@@ -165,7 +146,6 @@ public class CalculatorActivity extends AppCompatActivity {
 
                 //  check backwards for an operator
                 //  return index of that operator
-
                 findBackwardAdd = binding.userInputEditText.getText().toString().lastIndexOf(ADD, cursorIndex);
                 findBackwardSubtract = binding.userInputEditText.getText().toString().lastIndexOf(SUBTRACT, cursorIndex);
                 findBackwardMultiply = binding.userInputEditText.getText().toString().lastIndexOf(MULTIPLY, cursorIndex);
@@ -184,17 +164,14 @@ public class CalculatorActivity extends AppCompatActivity {
                 if (findBackward == -1){
                     findBackward = 0;
                 }
-
                 String extractedValue = binding.userInputEditText.getText().toString().substring(findBackward, findForward);
 
                 Log.d("foundForward" , String.valueOf(findForward));
                 Log.d("foundBackward" , String.valueOf(findBackward));
                 Log.d("Extracted Value", extractedValue);
-//              Log.d("CursorQuery", String.valueOf(binding.userInputEditText.getText().charAt(cursorIndex)));
                 canDecimal = !extractedValue.contains(".");
             }
         });
-
 
         binding.zeroBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -205,7 +182,6 @@ public class CalculatorActivity extends AppCompatActivity {
                                 return;
                     }
                     if (checkOperator()){
-                        builder.append(ZERO);// ignore
                         insertOrAppend(String.valueOf(ZERO));
                         canAppendZeroZero = false;
                         return;
@@ -215,7 +191,7 @@ public class CalculatorActivity extends AppCompatActivity {
                         return;
                     }
                 }
-                builder.append(ZERO);// ignore
+                numberModifyAfterEqualityClicked();
                 insertOrAppend(String.valueOf(ZERO));
             }
         });
@@ -229,7 +205,6 @@ public class CalculatorActivity extends AppCompatActivity {
                     }
 
                     if (checkOperator()){
-                        builder.append(ZERO); // ignore
                         insertOrAppend(String.valueOf(ZERO));
                         canAppendZeroZero = false;
                         return;
@@ -238,13 +213,11 @@ public class CalculatorActivity extends AppCompatActivity {
                     if (!canAppendZeroZero){
                         return;
                     }
-
-                    builder.append(ZERO);// ignore
                     insertOrAppend(String.valueOf(ZERO));
 
                 }
                 // continue code
-                builder.append(ZERO); // ignore
+                numberModifyAfterEqualityClicked();
                 insertOrAppend(String.valueOf(ZERO));
 
             }
@@ -253,8 +226,8 @@ public class CalculatorActivity extends AppCompatActivity {
         binding.oneBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                initZero(ONE);// replace initial zero with one
-                builder.append(ONE);// ignore
+                initZero();// replace initial zero with one
+                numberModifyAfterEqualityClicked();
                 insertOrAppend(String.valueOf(ONE));
                 canAppendZeroZero = true;
             }
@@ -263,8 +236,8 @@ public class CalculatorActivity extends AppCompatActivity {
         binding.twoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                initZero(TWO);
-                builder.append(TWO);
+                initZero();
+                numberModifyAfterEqualityClicked();
                 insertOrAppend(String.valueOf(TWO));
                 canAppendZeroZero = true;
             }
@@ -273,8 +246,8 @@ public class CalculatorActivity extends AppCompatActivity {
         binding.threeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                initZero(THREE);
-                builder.append(THREE);
+                initZero();
+                numberModifyAfterEqualityClicked();
                 insertOrAppend(String.valueOf(THREE));
                 canAppendZeroZero = true;
             }
@@ -283,8 +256,8 @@ public class CalculatorActivity extends AppCompatActivity {
         binding.fourBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                initZero(FOUR);
-                builder.append(FOUR);
+                initZero();
+                numberModifyAfterEqualityClicked();
                 insertOrAppend(String.valueOf(FOUR));
                 canAppendZeroZero = true;
             }
@@ -293,8 +266,8 @@ public class CalculatorActivity extends AppCompatActivity {
         binding.fiveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                initZero(FIVE);
-                builder.append(FIVE);
+                initZero();
+                numberModifyAfterEqualityClicked();
                 insertOrAppend(String.valueOf(FIVE));
                 canAppendZeroZero = true;
             }
@@ -303,8 +276,8 @@ public class CalculatorActivity extends AppCompatActivity {
         binding.sixBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                initZero(SIX);
-                builder.append(SIX);
+                initZero();
+                numberModifyAfterEqualityClicked();
                 insertOrAppend(String.valueOf(SIX));
                 canAppendZeroZero = true;
             }
@@ -313,8 +286,8 @@ public class CalculatorActivity extends AppCompatActivity {
         binding.sevenBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                initZero(SEVEN);
-                builder.append(SEVEN);
+                initZero();
+                numberModifyAfterEqualityClicked();
                 insertOrAppend(String.valueOf(SEVEN));
                 canAppendZeroZero = true;
             }
@@ -323,8 +296,8 @@ public class CalculatorActivity extends AppCompatActivity {
         binding.eightBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                initZero(EIGHT);
-                builder.append(EIGHT);
+                initZero();
+                numberModifyAfterEqualityClicked();
                 insertOrAppend(String.valueOf(EIGHT));
                 canAppendZeroZero = true;
             }
@@ -333,8 +306,8 @@ public class CalculatorActivity extends AppCompatActivity {
         binding.nineBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                initZero(NINE);
-                builder.append(NINE);
+                initZero();
+                numberModifyAfterEqualityClicked();
                 insertOrAppend(String.valueOf(NINE));
                 canAppendZeroZero = true;
             }
@@ -348,17 +321,15 @@ public class CalculatorActivity extends AppCompatActivity {
                     if (!canDecimal){
                         return;
                     }else
-                        if(checkOperator() || getCursorPosition() == 0){
-                        builder.append(ZERO);// ignore
-                        insertOrAppend(String.valueOf(ZERO));
+                        if(checkOperator() || getCursorPosition() == 0 || clickedEqualitySign){
+                            numberModifyAfterEqualityClicked();
+                            insertOrAppend(String.valueOf(ZERO));
                     }
 
                 }
                 else {
-                    builder.append(ZERO); // ignore
                     insertOrAppend(String.valueOf(ZERO));
                 }
-                builder.append(decimal_point);//ignore
                 insertOrAppend(decimal_point);
                 canDecimal = false;
             }
@@ -375,6 +346,7 @@ public class CalculatorActivity extends AppCompatActivity {
                 if (checkForEmptyOrSubtract()){
                     return;
                 }
+                operatorModifyAfterEqualityClicked();
                 replaceOperator(ADD);
 //              binding.userInputEditText.setText(builder.toString());
             }
@@ -391,10 +363,7 @@ public class CalculatorActivity extends AppCompatActivity {
                     insertOrAppend(SUBTRACT);
                     return;
                 }
-
-                // if charAt(cursor index ) = -
-                // return else append
-
+                operatorModifyAfterEqualityClicked();
                 replaceOperator(SUBTRACT);
             }
         });
@@ -405,6 +374,7 @@ public class CalculatorActivity extends AppCompatActivity {
                 if (checkForEmptyOrSubtract()){
                     return;
                 }
+                operatorModifyAfterEqualityClicked();
                 replaceOperator(MULTIPLY);
             }
         });
@@ -415,7 +385,23 @@ public class CalculatorActivity extends AppCompatActivity {
                 if (checkForEmptyOrSubtract()){
                     return;
                 }
+                operatorModifyAfterEqualityClicked();
                 replaceOperator(DIVIDE);
+            }
+        });
+
+        binding.equalsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!TextUtils.equals(binding.resultTextviewCalculatorActivity.getText().toString(), ErrorMessage)
+                        || !TextUtils.isEmpty(binding.userInputEditText.getText())){
+                            binding.userInputEditText.setTextSize(32);
+                            binding.resultTextviewCalculatorActivity.setTextSize(40);
+                            binding.userInputEditText.clearFocus();
+                            clickedEqualitySign = true;
+
+                }
+                canDecimal = true;
             }
         });
 
@@ -428,6 +414,11 @@ public class CalculatorActivity extends AppCompatActivity {
 //                builder.setLength(0);
                 binding.userInputEditText.getText().clear();
                 binding.resultTextviewCalculatorActivity.setText("");
+
+                if (clickedEqualitySign){
+                    resetTextSizes();
+                    clickedEqualitySign = false;
+                }
                 canDecimal = true;
             }
         });
@@ -442,28 +433,28 @@ public class CalculatorActivity extends AppCompatActivity {
                     if (TextUtils.equals(String.valueOf(Objects.requireNonNull(binding.userInputEditText.getText()).charAt(getCursorPosition() - 1)) , decimal_point)){
                         canDecimal = true;
                     }
-//                  builder.deleteCharAt(builder.length() - 1);
-                    textFieldInputConnection.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
 
+                } else if (clickedEqualitySign){
+                    resetTextSizes();
+                    binding.userInputEditText.requestFocus(binding.userInputEditText.length());
                 }
+                textFieldInputConnection.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
             }
         });
     }
 
     // checks
-    protected void initZero(int number){
+    protected void initZero(){
         if (!TextUtils.isEmpty(binding.userInputEditText.getText())
                 && binding.userInputEditText.length() == 1
                 && binding.userInputEditText.getText().toString().charAt(0) == '0'){
                     binding.userInputEditText.getText().clear();
-                    builder.setCharAt(0, (char) number);
         }
     }
 
     protected void replaceOperator(String operator){
         Log.d("Operator found", String.valueOf(checkOperator()));
         if (checkOperator()){
-            //textFieldInputConnection.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
             Objects.requireNonNull(binding.userInputEditText.getText()).delete(cursorIndex, getCursorPosition());
         }
         insertOrAppend(operator);
@@ -550,4 +541,54 @@ public class CalculatorActivity extends AppCompatActivity {
 
         return  utilitySBuilder.toString();
     }
+
+    protected boolean scanForOperator(String expression){
+        return expression.contains("+")
+                || expression.contains("-")
+                || expression.contains("÷")
+                || expression.contains("×");
+    }
+
+    protected void evaluateAndSetExpression(String expression){
+        if (!expression.isEmpty()){
+
+            Expression esp = new Expression(checkExpression(expression));
+            if (esp.checkSyntax()){
+                result = String.valueOf(esp.calculate());
+                if (result.endsWith(".0")){
+                    result = result.replace(".0", "");
+                }
+            }
+            else {
+                result = ErrorMessage;
+            }
+            binding.resultTextviewCalculatorActivity.setText(result);
+        }
+    }
+
+    protected void operatorModifyAfterEqualityClicked(){
+        if (clickedEqualitySign){
+            resetTextSizes();
+            binding.userInputEditText.setText(binding.resultTextviewCalculatorActivity.getText().toString());
+            binding.userInputEditText.requestFocus(binding.userInputEditText.length());
+            binding.resultTextviewCalculatorActivity.setText("");
+            clickedEqualitySign = false;
+        }
+    }
+
+    protected void numberModifyAfterEqualityClicked(){
+        if (clickedEqualitySign){
+            resetTextSizes();
+            binding.userInputEditText.setText("");
+            binding.resultTextviewCalculatorActivity.setText("");
+            clickedEqualitySign = false;
+        }
+    }
+
+    protected void resetTextSizes(){
+        binding.userInputEditText.setTextSize(40);
+        binding.resultTextviewCalculatorActivity.setTextSize(32);
+    }
+
+
 }
