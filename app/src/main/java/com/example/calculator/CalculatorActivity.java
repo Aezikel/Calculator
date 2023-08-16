@@ -2,10 +2,15 @@ package com.example.calculator;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import android.annotation.SuppressLint;
+import android.app.UiModeManager;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -14,6 +19,7 @@ import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.BaseInputConnection;
+import android.widget.ListView;
 import com.example.calculator.databinding.ActivityCalculatorBinding;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -39,6 +45,10 @@ public class CalculatorActivity extends AppCompatActivity {
      String result;
      String ErrorMessage;
 
+     int themeMode;
+     SharedPreferences preferences;
+     int checkedItemPosition;
+
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -47,6 +57,12 @@ public class CalculatorActivity extends AppCompatActivity {
         binding = ActivityCalculatorBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+
+
+        // get defPreference and themeMode
+        preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        themeMode =  preferences.getInt("ThemeMode", AppCompatDelegate.MODE_NIGHT_NO);
+        applyThemeMode(themeMode);
 
         utilitySBuilder = new StringBuilder();
         textFieldInputConnection = new BaseInputConnection(binding.userInputEditText, true); // fake delete event
@@ -66,7 +82,6 @@ public class CalculatorActivity extends AppCompatActivity {
         final String MULTIPLY = "×";
         final String DIVIDE = "÷";
         final String PERCENT = "%";
-        final String EQUALS = "=";
 
         ErrorMessage = "Expression error";
 
@@ -79,26 +94,40 @@ public class CalculatorActivity extends AppCompatActivity {
         binding.toolbarCalculatorActivity.getMenu().findItem(R.id.choose_theme_menu_item).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(@NonNull MenuItem menuItem) {
+                
                 MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(CalculatorActivity.this)
                         .setTitle(getString(R.string.choosePtheme))
+                        .setSingleChoiceItems(getResources().getStringArray(R.array.theme_dialog_array), getCheckedItemPosition(), null)
                         .setNegativeButton(getString(R.string.Cancel), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
                             }
                         })
                         .setPositiveButton(getString(R.string.Ok), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                            }
-                        })
-                        .setSingleChoiceItems(getResources().getStringArray(R.array.theme_dialog_array), ONE, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                                ListView lw = ((androidx.appcompat.app.AlertDialog) dialogInterface).getListView();
+                                int checkedItem = lw.getCheckedItemPosition();
+
+                                switch (checkedItem) {
+                                    case 0:
+                                        themeMode = AppCompatDelegate.MODE_NIGHT_YES;
+                                        break;
+                                    case 1:
+                                        themeMode = AppCompatDelegate.MODE_NIGHT_NO;
+                                }
+
+                                SharedPreferences.Editor editor = preferences.edit();
+                                editor.putInt("ThemeMode", themeMode);
+                                editor.apply();
+
+                                applyThemeMode(themeMode);
                             }
                         });
 
                     materialAlertDialogBuilder.create().show();
-
                 return false;
             }
         });
@@ -421,7 +450,6 @@ public class CalculatorActivity extends AppCompatActivity {
                 if (TextUtils.isEmpty(binding.userInputEditText.getText())){
                     return;
                 }
-//                builder.setLength(0);
                 binding.userInputEditText.getText().clear();
                 binding.resultTextviewCalculatorActivity.setText("");
 
@@ -478,8 +506,7 @@ public class CalculatorActivity extends AppCompatActivity {
             return binding.userInputEditText.getText().charAt(cursorIndex) == '+'
                     || binding.userInputEditText.getText().charAt(cursorIndex) == '-'
                     || binding.userInputEditText.getText().charAt(cursorIndex) == '÷'
-                    || binding.userInputEditText.getText().charAt(cursorIndex) == '×'
-                    || binding.userInputEditText.getText().charAt(cursorIndex) == '%';
+                    || binding.userInputEditText.getText().charAt(cursorIndex) == '×';
         }
         return false;
     }
@@ -493,7 +520,6 @@ public class CalculatorActivity extends AppCompatActivity {
                     || binding.userInputEditText.getText().charAt(cursorIndex) == '%';
         }
         return false;
-
     }
 
     protected boolean checkForEmptyOrSubtract(){
@@ -554,13 +580,6 @@ public class CalculatorActivity extends AppCompatActivity {
         return  utilitySBuilder.toString();
     }
 
-    protected boolean scanForOperator(String expression){
-        return expression.contains("+")
-                || expression.contains("-")
-                || expression.contains("÷")
-                || expression.contains("×");
-    }
-
     protected void evaluateAndSetExpression(String expression){
         if (!expression.isEmpty() && !indexZeroIsMinus()){
 
@@ -602,5 +621,22 @@ public class CalculatorActivity extends AppCompatActivity {
         binding.resultTextviewCalculatorActivity.setTextSize(32);
     }
 
+    protected void applyThemeMode(int themeMode){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            UiModeManager manager = (UiModeManager) getSystemService(UI_MODE_SERVICE);
+            manager.setApplicationNightMode(themeMode);
+        }
+        else{
+            AppCompatDelegate.setDefaultNightMode(themeMode);
+        }
+    }
 
+    protected int getCheckedItemPosition(){
+        if (themeMode == AppCompatDelegate.MODE_NIGHT_YES){
+            checkedItemPosition = 0;
+        } else if (themeMode == AppCompatDelegate.MODE_NIGHT_NO) {
+            checkedItemPosition = 1;
+        }
+        return  checkedItemPosition;
+    }
 }
