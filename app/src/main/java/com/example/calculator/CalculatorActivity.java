@@ -35,8 +35,8 @@ public class CalculatorActivity extends AppCompatActivity {
      boolean canDecimal;
      boolean canAppendZeroZero;
      boolean clickedEqualitySign;
-     int cursorIndex;
 
+     int cursorIndex;
      int findForwardAdd, findForwardSubtract, findForwardMultiply, findForwardDivide;
      int findBackwardAdd, findBackwardSubtract, findBackwardMultiply, findBackwardDivide;
      int findForward , findBackward;
@@ -215,7 +215,6 @@ public class CalculatorActivity extends AppCompatActivity {
                         canAppendZeroZero = false;
                         return;
                     }
-
                     if (!canAppendZeroZero){
                         return;
                     }
